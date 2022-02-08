@@ -34,7 +34,7 @@ val Typography = Typography(
     caption = TextStyle(
         fontFamily = spartanFontFamily,
         fontWeight = FontWeight.Normal,
-        fontSize = 12.sp
+        fontSize = 11.sp
     ),
     h1 = TextStyle(
         fontFamily = spartanFontFamily,
@@ -53,7 +53,7 @@ val Typography = Typography(
     ),
     subtitle1 = TextStyle(
         fontFamily = spartanFontFamily,
-        fontWeight = FontWeight.Normal,
+        fontWeight = FontWeight.SemiBold,
         fontSize = 12.sp
     ),
     subtitle2 = TextStyle(

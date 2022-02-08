@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Account</string>
+    <string name="title_activity_invoice_detail">InvoiceDetail</string>
 </resources>

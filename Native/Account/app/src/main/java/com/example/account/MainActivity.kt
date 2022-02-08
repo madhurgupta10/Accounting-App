@@ -1,10 +1,13 @@
 package com.example.account
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -20,8 +23,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.account.elements.ActivityTemplate
+import com.example.account.elements.InvoiceId
 import com.example.account.enums.InvoiceStatus
-import com.example.account.ui.theme.AccountTheme
 import com.example.account.ui.theme.*
 
 class MainActivity : ComponentActivity() {
@@ -29,33 +33,26 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            AccountTheme {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(color = MaterialTheme.colors.background)
-                ) {
-                    Box {
-                        TopAppBar()
-                        Content()
-                    }
+            ActivityTemplate(
+                content = {
+                    MainActivityContent(this)
                 }
-            }
+            )
         }
     }
 }
 
 @Composable
-fun Body(modifier: Modifier, invoices: List<String>?) {
+fun Body(modifier: Modifier, invoices: List<String>?, context: Context) {
     if (invoices?.isNotEmpty() == true) {
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(20.dp),
+                .padding(Constants.outerPadding),
             verticalArrangement = Arrangement.spacedBy(15.dp),
         ) {
             items(invoices) { item ->
-                InvoiceCard()
+                InvoiceCard(context)
             }
         }
     } else {
@@ -64,33 +61,27 @@ fun Body(modifier: Modifier, invoices: List<String>?) {
 }
 
 @Composable
-fun InvoiceCard() {
+fun InvoiceCard(context: Context) {
     Card(
-        shape = RoundedCornerShape(10.dp),
+        shape = Constants.cardShape,
         backgroundColor = MaterialTheme.colors.surface,
+        modifier = Modifier
+            .clip(Constants.cardShape)
+            .clickable {
+                context.startActivity(Intent(context, InvoiceDetailActivity::class.java))
+            }
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(IntrinsicSize.Min)
-                .padding(20.dp),
+                .padding(Constants.cardPadding),
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Row {
-                    Text(
-                        text = "#",
-                        style = MaterialTheme.typography.subtitle1,
-                        color = MaterialTheme.colors.onSurface
-                    )
-                    Text(
-                        text = "RT3080",
-                        style = MaterialTheme.typography.subtitle2,
-                        color = MaterialTheme.colors.onBackground
-                    )
-                }
+                InvoiceId("RT3080")
                 Text(
                     text = "Jensen Huang",
                     style = MaterialTheme.typography.subtitle1,
@@ -179,19 +170,19 @@ fun StatusButton(modifier: Modifier, type: InvoiceStatus) {
 }
 
 @Composable
-fun Content() {
+fun MainActivityContent(context: Context) {
     Column(
         modifier = Modifier.fillMaxSize(),
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
-                .padding(top = 100.dp, start = 20.dp)
+                .padding(top = 100.dp, start = 20.dp, end = 20.dp)
                 .fillMaxWidth()
                 .width(200.dp)
                 .height(IntrinsicSize.Min)
         ) {
-            NoInvoiceHeader()
+            InvoiceHeader(num = 5)
             Buttons(modifier = Modifier.align(Alignment.CenterVertically))
         }
         Column(
@@ -201,7 +192,8 @@ fun Content() {
         ) {
             Body(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
-                invoices = listOf("1", "2", "3", "4", "5")
+                invoices = listOf("1", "2", "3", "4", "5"),
+                context = context
             )
         }
     }
@@ -209,8 +201,8 @@ fun Content() {
 
 @Composable
 fun Buttons(modifier: Modifier) {
-    Row(modifier = modifier.padding(end = 20.dp)) {
-        Filter(
+    Row(modifier = modifier) {
+        FilterButton(
             modifier = Modifier.align(Alignment.CenterVertically)
         )
         AddNewButton(modifier = Modifier.align(Alignment.CenterVertically))
@@ -221,14 +213,7 @@ fun Buttons(modifier: Modifier) {
 fun AddNewButton(modifier: Modifier) {
     Box(
         modifier = modifier
-            .clip(
-                RoundedCornerShape(
-                    90.dp,
-                    90.dp,
-                    90.dp,
-                    90.dp
-                )
-            )
+            .clip(RoundedCornerShape(90.dp))
             .background(color = MaterialTheme.colors.primary)
     ) {
         Row(modifier = Modifier.padding(10.dp)) {
@@ -258,7 +243,7 @@ fun AddNewButton(modifier: Modifier) {
 }
 
 @Composable
-fun Filter(modifier: Modifier) {
+fun FilterButton(modifier: Modifier) {
     Row(modifier = modifier) {
         Text(
             "Filter", color = MaterialTheme.colors.onBackground,
@@ -275,7 +260,15 @@ fun Filter(modifier: Modifier) {
 }
 
 @Composable
-fun NoInvoiceHeader() {
+fun InvoiceHeader(num: Int?) {
+    var numInvoice = "No invoices"
+    if (num != null && num > 0) {
+        numInvoice = if (num > 1) {
+            "$num invoices"
+        } else {
+            "$num invoice"
+        }
+    }
     Column {
         Text(
             "Invoices",
@@ -283,7 +276,7 @@ fun NoInvoiceHeader() {
             style = MaterialTheme.typography.h1
         )
         Text(
-            "No invoices", color = MaterialTheme.colors.onBackground,
+            numInvoice, color = MaterialTheme.colors.onBackground,
             style = MaterialTheme.typography.h4
         )
     }
@@ -325,7 +318,6 @@ fun TopAppBar() {
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier
             .fillMaxWidth()
-            .width(200.dp)
             .height(IntrinsicSize.Min)
             .background(color = MaterialTheme.colors.surface)
     ) {

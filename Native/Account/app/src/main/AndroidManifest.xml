@@ -10,9 +10,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Account">
         <activity
+            android:name=".InvoiceDetailActivity"
+            android:exported="false"
+            android:label="@string/title_activity_invoice_detail"
+            android:theme="@style/Theme.Account" />
+        <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.Account">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
