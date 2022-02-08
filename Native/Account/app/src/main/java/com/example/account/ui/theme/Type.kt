@@ -23,7 +23,7 @@ val spartanFontFamily = FontFamily(
 val Typography = Typography(
     body1 = TextStyle(
         fontFamily = spartanFontFamily,
-        fontWeight = FontWeight.Normal,
+        fontWeight = FontWeight.Bold,
         fontSize = 16.sp
     ),
     button = TextStyle(
@@ -49,6 +49,16 @@ val Typography = Typography(
     h4 = TextStyle(
         fontFamily = spartanFontFamily,
         fontWeight = FontWeight.Normal,
+        fontSize = 12.sp
+    ),
+    subtitle1 = TextStyle(
+        fontFamily = spartanFontFamily,
+        fontWeight = FontWeight.Normal,
+        fontSize = 12.sp
+    ),
+    subtitle2 = TextStyle(
+        fontFamily = spartanFontFamily,
+        fontWeight = FontWeight.Bold,
         fontSize = 12.sp
     )
 

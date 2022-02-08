@@ -6,20 +6,23 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Divider
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.example.account.enums.InvoiceStatus
 import com.example.account.ui.theme.AccountTheme
+import com.example.account.ui.theme.*
 
 class MainActivity : ComponentActivity() {
 
@@ -43,32 +46,135 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Body(modifier: Modifier) {
-    Column(
-        modifier = modifier
-            .width(IntrinsicSize.Min)
-            .height(IntrinsicSize.Min)
-    ) {
-        Icon(
-            painter = painterResource(R.drawable.ic_illustration_empty), "No Invoice",
-            tint = androidx.compose.ui.graphics.Color.Unspecified,
+fun Body(modifier: Modifier, invoices: List<String>?) {
+    if (invoices?.isNotEmpty() == true) {
+        LazyColumn(
             modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .size(200.dp)
-        )
-        Text(
-            "There is nothing here",
-            color = MaterialTheme.colors.onBackground,
-            style = MaterialTheme.typography.h1,
-            textAlign = TextAlign.Center
-        )
-        Text(
-            "Create an invoice by clicking on New button and get started",
-            color = MaterialTheme.colors.onBackground,
-            style = MaterialTheme.typography.h4,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.padding(top = 30.dp)
-        )
+                .fillMaxSize()
+                .padding(20.dp),
+            verticalArrangement = Arrangement.spacedBy(15.dp),
+        ) {
+            items(invoices) { item ->
+                InvoiceCard()
+            }
+        }
+    } else {
+        NoInvoiceBody(modifier)
+    }
+}
+
+@Composable
+fun InvoiceCard() {
+    Card(
+        shape = RoundedCornerShape(10.dp),
+        backgroundColor = MaterialTheme.colors.surface,
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(IntrinsicSize.Min)
+                .padding(20.dp),
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Row {
+                    Text(
+                        text = "#",
+                        style = MaterialTheme.typography.subtitle1,
+                        color = MaterialTheme.colors.onSurface
+                    )
+                    Text(
+                        text = "RT3080",
+                        style = MaterialTheme.typography.subtitle2,
+                        color = MaterialTheme.colors.onBackground
+                    )
+                }
+                Text(
+                    text = "Jensen Huang",
+                    style = MaterialTheme.typography.subtitle1,
+                    color = MaterialTheme.colors.onBackground
+                )
+            }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 20.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Column {
+                    Text(
+                        text = "Due 19 Aug 2021",
+                        style = MaterialTheme.typography.subtitle1,
+                        color = MaterialTheme.colors.onBackground,
+                        modifier = Modifier.padding(bottom = 5.dp)
+                    )
+                    Text(
+                        text = "£ 1,800.90",
+                        style = MaterialTheme.typography.body1,
+                        color = MaterialTheme.colors.onBackground
+                    )
+                }
+                StatusButton(
+                    modifier = Modifier
+                        .align(Alignment.CenterVertically),
+                    type = InvoiceStatus.Pending
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun StatusButton(modifier: Modifier, type: InvoiceStatus) {
+    var backgroundColor = ColorPaidBackground
+    var foregroundColor = ColorPaidForeground
+    var text = "Paid"
+    when (type) {
+        InvoiceStatus.Pending -> {
+            backgroundColor = ColorPendingBackground
+            foregroundColor = ColorPendingForeground
+            text = "Pending"
+        }
+        InvoiceStatus.Draft -> {
+            backgroundColor = ColorDraftBackground
+            foregroundColor = ColorDraftForeground
+            text = "Draft"
+        }
+        else -> {}
+    }
+
+    Card(
+        shape = RoundedCornerShape(6.dp),
+        backgroundColor = backgroundColor,
+        modifier = modifier
+            .width(100.dp),
+        elevation = 0.dp
+    ) {
+        Row(
+            modifier = Modifier.padding(
+                top = 10.dp,
+                bottom = 10.dp
+            ),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(7.dp)
+                    .fillMaxHeight()
+                    .clip(CircleShape)
+                    .background(foregroundColor)
+                    .align(Alignment.CenterVertically)
+            )
+            Text(
+                text = text,
+                fontSize = 12.sp,
+                color = foregroundColor,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(start = 7.dp)
+            )
+        }
     }
 }
 
@@ -93,7 +199,10 @@ fun Content() {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Body(modifier = Modifier.align(Alignment.CenterHorizontally))
+            Body(
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+                invoices = listOf("1", "2", "3", "4", "5")
+            )
         }
     }
 }
@@ -181,6 +290,36 @@ fun NoInvoiceHeader() {
 }
 
 @Composable
+fun NoInvoiceBody(modifier: Modifier) {
+    Column(
+        modifier = modifier
+            .width(IntrinsicSize.Min)
+            .height(IntrinsicSize.Min)
+    ) {
+        Icon(
+            painter = painterResource(R.drawable.ic_illustration_empty), "No Invoice",
+            tint = androidx.compose.ui.graphics.Color.Unspecified,
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .size(200.dp)
+        )
+        Text(
+            "There is nothing here",
+            color = MaterialTheme.colors.onBackground,
+            style = MaterialTheme.typography.h1,
+            textAlign = TextAlign.Center
+        )
+        Text(
+            "Create an invoice by clicking on New button and get started",
+            color = MaterialTheme.colors.onBackground,
+            style = MaterialTheme.typography.h4,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.padding(top = 30.dp)
+        )
+    }
+}
+
+@Composable
 fun TopAppBar() {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -195,8 +334,24 @@ fun TopAppBar() {
                 .clip(RoundedCornerShape(0.dp, 20.dp, 20.dp, 0.dp))
                 .width(60.dp)
                 .height(60.dp)
-                .background(color = MaterialTheme.colors.primary)
-        )
+                .background(
+                    Brush.verticalGradient(
+                        colors = listOf(
+                            MaterialTheme.colors.primary,
+                            MaterialTheme.colors.primaryVariant
+                        ),
+                        startY = 5.0f
+                    )
+                )
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.ic_logo), "Logo",
+                tint = MaterialTheme.colors.onPrimary,
+                modifier = Modifier
+                    .padding(start = 20.dp, end = 20.dp)
+                    .align(Alignment.Center)
+            )
+        }
         Row {
             Icon(
                 painter = painterResource(R.drawable.ic_icon_sun), "Change Theme",

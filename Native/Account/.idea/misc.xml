@@ -3,7 +3,15 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Projects/android-orqdzg/Native/Account/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2965" />
+        <entry key="..\:/Projects/android-orqdzg/Native/Account/app/src/main/res/drawable/ic_icon_calendar.xml" value="0.2965" />
+        <entry key="..\:/Projects/android-orqdzg/Native/Account/app/src/main/res/drawable/ic_icon_check.xml" value="0.2965" />
+        <entry key="..\:/Projects/android-orqdzg/Native/Account/app/src/main/res/drawable/ic_icon_delete.xml" value="0.2965" />
+        <entry key="..\:/Projects/android-orqdzg/Native/Account/app/src/main/res/drawable/ic_icon_moon.xml" value="0.2965" />
+        <entry key="..\:/Projects/android-orqdzg/Native/Account/app/src/main/res/drawable/ic_icon_plus.xml" value="0.2965" />
+        <entry key="..\:/Projects/android-orqdzg/Native/Account/app/src/main/res/drawable/ic_icon_sun.xml" value="0.2965" />
         <entry key="..\:/Projects/android-orqdzg/Native/Account/app/src/main/res/drawable/ic_illustration_empty.xml" value="0.2965" />
+        <entry key="..\:/Projects/android-orqdzg/Native/Account/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2965" />
       </map>
     </option>
   </component>
