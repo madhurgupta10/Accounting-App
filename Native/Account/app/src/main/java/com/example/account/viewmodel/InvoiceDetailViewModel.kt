@@ -2,9 +2,12 @@ package com.example.account.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.account.model.Invoice
 import com.example.account.repository.InvoiceRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -14,7 +17,9 @@ class InvoiceDetailViewModel @Inject constructor(
 ) : AndroidViewModel(application) {
 
     fun deleteInvoice(invoice: Invoice) {
-
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteInvoice(invoice)
+        }
     }
 
     fun editInvoice(invoice: Invoice) {

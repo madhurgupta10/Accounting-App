@@ -16,4 +16,9 @@ class InvoiceRepository @Inject constructor(
             invoiceDao.addInvoice(invoice)
         }
     }
+
+    suspend fun deleteInvoice(invoice: Invoice) {
+        invoiceDao.deleteInvoice(invoice)
+    }
+
 }

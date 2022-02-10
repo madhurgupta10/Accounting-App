@@ -1,6 +1,7 @@
 package com.example.account.ui
 
 import android.app.Activity
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -50,7 +51,7 @@ class InvoiceDetailActivity : ComponentActivity() {
                     InvoiceDetailActivityContent(this, invoice)
                 },
                 bottomBar = { modifier ->
-                    BottomBar(modifier, invoice, invoiceDetailViewModel)
+                    BottomBar(modifier, invoice, invoiceDetailViewModel, this)
                 }
             )
         }
@@ -59,8 +60,6 @@ class InvoiceDetailActivity : ComponentActivity() {
 
 @Composable
 fun InvoiceDetailActivityContent(activity: Activity, invoice: Invoice) {
-    val status = getStatus(invoice.status)
-    val bottomPadding = if (status == InvoiceStatus.Paid) 0.dp else Constants.outerPadding
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -71,7 +70,7 @@ fun InvoiceDetailActivityContent(activity: Activity, invoice: Invoice) {
             modifier = Modifier
                 .padding(
                     top = 0.dp,
-                    bottom = bottomPadding,
+                    bottom = Constants.outerPadding,
                     start = Constants.outerPadding,
                     end = Constants.outerPadding
                 )
@@ -85,14 +84,12 @@ fun InvoiceDetailActivityContent(activity: Activity, invoice: Invoice) {
 
 @Composable
 fun DetailCard(invoice: Invoice) {
-    val status = getStatus(invoice.status)
-    val bottomPadding = if (status == InvoiceStatus.Paid) 30.dp else 140.dp
     Card(
         shape = Constants.cardShape,
         backgroundColor = MaterialTheme.colors.surface,
         modifier = Modifier
             .clip(Constants.cardShape)
-            .padding(bottom = bottomPadding)
+            .padding(bottom = 140.dp)
     ) {
         Column(
             modifier = Modifier
@@ -306,30 +303,30 @@ fun StatusCard(status: InvoiceStatus) {
 fun BottomBar(
     modifier: Modifier,
     invoice: Invoice,
-    invoiceDetailViewModel: InvoiceDetailViewModel
+    invoiceDetailViewModel: InvoiceDetailViewModel,
+    activity: Activity
 ) {
-    val status = getStatus(invoice.status)
-    if (status != InvoiceStatus.Paid) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            modifier = modifier
-                .fillMaxWidth()
-                .height(IntrinsicSize.Min)
-                .background(color = MaterialTheme.colors.surface)
-                .padding(20.dp)
-        ) {
-            when (status) {
-                InvoiceStatus.Pending -> {
-                    EditButton(invoice, invoiceDetailViewModel)
-                    DeleteButton(invoice, invoiceDetailViewModel)
-                    MarkAsPaidButton(invoice, invoiceDetailViewModel)
-                }
-                InvoiceStatus.Draft -> {
-                    EditButton(invoice, invoiceDetailViewModel)
-                    DeleteButton(invoice, invoiceDetailViewModel)
-                }
-                else -> {}
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceEvenly,
+        modifier = modifier
+            .fillMaxWidth()
+            .height(IntrinsicSize.Min)
+            .background(color = MaterialTheme.colors.surface)
+            .padding(20.dp)
+    ) {
+        when (getStatus(invoice.status)) {
+            InvoiceStatus.Pending -> {
+                EditButton(invoice, invoiceDetailViewModel)
+                DeleteButton(invoice, invoiceDetailViewModel, activity)
+                MarkAsPaidButton(invoice, invoiceDetailViewModel)
+            }
+            InvoiceStatus.Draft -> {
+                EditButton(invoice, invoiceDetailViewModel)
+                DeleteButton(invoice, invoiceDetailViewModel, activity)
+            }
+            else -> {
+                DeleteButton(invoice, invoiceDetailViewModel, activity)
             }
         }
     }
@@ -346,12 +343,17 @@ fun MarkAsPaidButton(invoice: Invoice, invoiceDetailViewModel: InvoiceDetailView
 }
 
 @Composable
-fun DeleteButton(invoice: Invoice, invoiceDetailViewModel: InvoiceDetailViewModel) {
+fun DeleteButton(
+    invoice: Invoice,
+    invoiceDetailViewModel: InvoiceDetailViewModel,
+    activity: Activity
+) {
     InvoiceButton(InvoiceButton.Delete,
         Modifier
             .clip(RoundedCornerShape(90.dp))
             .clickable {
                 invoiceDetailViewModel.deleteInvoice(invoice)
+                activity.finish()
             })
 }
 
