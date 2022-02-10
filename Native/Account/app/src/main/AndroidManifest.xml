@@ -11,9 +11,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Account">
         <activity
+            android:name=".ui.newinvoice.NewInvoiceActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Account" />
+        <activity
             android:name=".ui.invoicedetail.InvoiceDetailActivity"
             android:exported="false"
-            android:label="@string/title_activity_invoice_detail"
             android:theme="@style/Theme.Account" />
         <activity
             android:name=".ui.main.MainActivity"

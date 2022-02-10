@@ -1,4 +1,4 @@
-package com.example.account.ui.invoicedetail.components
+package com.example.account.ui.newinvoice.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -7,12 +7,10 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.account.model.Invoice
 import com.example.account.utils.Constants
-import com.example.account.utils.getStatus
 
 @Composable
-fun ActivityContent(invoice: Invoice) {
+fun ActivityContent() {
     Column(
         modifier = Modifier
             .padding(
@@ -23,7 +21,5 @@ fun ActivityContent(invoice: Invoice) {
             )
             .verticalScroll(rememberScrollState())
     ) {
-        StatusCard(getStatus(invoice.status))
-        DetailCard(invoice)
     }
 }

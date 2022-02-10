@@ -1,6 +1,9 @@
 package com.example.account.ui.main.components
 
+import android.content.Context
+import android.content.Intent
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -17,12 +20,17 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.account.R
+import com.example.account.ui.newinvoice.NewInvoiceActivity
 
 @Composable
-fun AddNewButton(modifier: Modifier) {
+fun AddNewButton(modifier: Modifier, context: Context) {
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(90.dp))
+            .clickable {
+                val intent = Intent(context, NewInvoiceActivity::class.java)
+                context.startActivity(intent)
+            }
             .background(color = MaterialTheme.colors.primary)
     ) {
         Row(modifier = Modifier.padding(10.dp)) {

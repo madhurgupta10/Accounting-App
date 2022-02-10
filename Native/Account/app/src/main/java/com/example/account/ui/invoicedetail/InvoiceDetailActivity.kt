@@ -25,14 +25,16 @@ class InvoiceDetailActivity : ComponentActivity() {
             ActivityTemplate(
                 content = {
                     invoice.value?.let {
-                        ActivityContent(this, it)
+                        ActivityContent(it)
                     }
                 },
                 bottomBar = { modifier ->
                     invoice.value?.let {
                         BottomBar(modifier, it, invoiceDetailViewModel, this)
                     }
-                }
+                },
+                showGoBack = true,
+                activity = this
             )
         }
     }

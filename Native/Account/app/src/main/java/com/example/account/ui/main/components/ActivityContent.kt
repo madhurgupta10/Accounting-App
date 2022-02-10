@@ -19,13 +19,12 @@ fun ActivityContent(context: Context, mainViewModel: MainViewModel) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
-                .padding(top = 100.dp, start = 20.dp, end = 20.dp)
+                .padding(top = 90.dp, start = 20.dp, end = 20.dp, bottom = 10.dp)
                 .fillMaxWidth()
-                .width(200.dp)
                 .height(IntrinsicSize.Min)
         ) {
             InvoiceHeader(num = invoices?.size)
-            Buttons(modifier = Modifier.align(Alignment.CenterVertically))
+            Buttons(modifier = Modifier.align(Alignment.CenterVertically), context)
         }
         Column(
             modifier = Modifier.fillMaxSize(),
