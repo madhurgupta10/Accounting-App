@@ -17,6 +17,10 @@ class InvoiceRepository @Inject constructor(
         }
     }
 
+    fun getInvoiceById(id: String?): LiveData<Invoice> {
+        return invoiceDao.getInvoiceById(id)
+    }
+
     suspend fun deleteInvoice(invoice: Invoice) {
         invoiceDao.deleteInvoice(invoice)
     }

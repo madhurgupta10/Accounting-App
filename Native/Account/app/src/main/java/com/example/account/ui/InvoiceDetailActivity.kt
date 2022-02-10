@@ -13,6 +13,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -40,15 +41,20 @@ class InvoiceDetailActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val invoice = intent.getSerializableExtra("invoice") as Invoice
 
         setContent {
+            val invoice = invoiceDetailViewModel.getInvoiceById(intent.getStringExtra("id"))
+                .observeAsState(null)
             ActivityTemplate(
                 content = {
-                    InvoiceDetailActivityContent(this, invoice)
+                    invoice.value?.let {
+                        InvoiceDetailActivityContent(this, it)
+                    }
                 },
                 bottomBar = { modifier ->
-                    BottomBar(modifier, invoice, invoiceDetailViewModel, this)
+                    invoice.value?.let {
+                        BottomBar(modifier, it, invoiceDetailViewModel, this)
+                    }
                 }
             )
         }
@@ -316,7 +322,7 @@ fun BottomBar(
             InvoiceStatus.Pending -> {
                 EditButton(invoice, invoiceDetailViewModel)
                 DeleteButton(invoice, invoiceDetailViewModel, activity)
-                MarkAsPaidButton(invoice, invoiceDetailViewModel, activity)
+                MarkAsPaidButton(invoice, invoiceDetailViewModel)
             }
             InvoiceStatus.Draft -> {
                 EditButton(invoice, invoiceDetailViewModel)
@@ -332,15 +338,13 @@ fun BottomBar(
 @Composable
 fun MarkAsPaidButton(
     invoice: Invoice,
-    invoiceDetailViewModel: InvoiceDetailViewModel,
-    activity: Activity
+    invoiceDetailViewModel: InvoiceDetailViewModel
 ) {
     CustomButton(InvoiceButton.MarkAsPaid,
         Modifier
             .clip(RoundedCornerShape(90.dp))
             .clickable {
                 invoiceDetailViewModel.markInvoiceAsPaid(invoice)
-                activity.finish()
             })
 }
 

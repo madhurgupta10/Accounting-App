@@ -12,6 +12,9 @@ interface InvoiceDao {
     @Query("SELECT * FROM invoices")
     fun readAllInvoices(): LiveData<List<Invoice>>
 
+    @Query("SELECT * FROM invoices WHERE id=:id")
+    fun getInvoiceById(id: String?): LiveData<Invoice>
+
     @Update
     suspend fun updateInvoice(invoice: Invoice)
 

@@ -2,6 +2,8 @@ package com.example.account.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.example.account.model.Invoice
 import com.example.account.repository.InvoiceRepository
@@ -16,6 +18,8 @@ class InvoiceDetailViewModel @Inject constructor(
     private val repository: InvoiceRepository,
     application: Application,
 ) : AndroidViewModel(application) {
+
+    fun getInvoiceById(id: String?): LiveData<Invoice> = repository.getInvoiceById(id)
 
     fun deleteInvoice(invoice: Invoice) {
         viewModelScope.launch(Dispatchers.IO) {
