@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 @Entity(
     tableName = "items",
@@ -21,4 +22,4 @@ data class InvoiceItem(
     @SerializedName("quantity") val quantity: Int,
     @SerializedName("price") val price: Float,
     @ColumnInfo(index = true) val parentInvoiceId: String
-)
+) : Serializable

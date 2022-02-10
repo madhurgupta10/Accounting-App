@@ -4,6 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.account.utils.getNewInvoiceId
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 @Entity(tableName = "invoices")
 data class Invoice(
@@ -17,4 +18,4 @@ data class Invoice(
     @SerializedName("senderAddress") val senderAddress: Address,
     @SerializedName("clientAddress") val clientAddress: Address,
     @SerializedName("items") val items: List<InvoiceItem>,
-)
+) : Serializable

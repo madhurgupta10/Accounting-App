@@ -84,7 +84,9 @@ fun InvoiceCard(context: Context, invoice: Invoice) {
         modifier = Modifier
             .clip(Constants.cardShape)
             .clickable {
-                context.startActivity(Intent(context, InvoiceDetailActivity::class.java))
+                val intent = Intent(context, InvoiceDetailActivity::class.java)
+                intent.putExtra("invoice", invoice)
+                context.startActivity(intent)
             }
     ) {
         Column(
