@@ -1,7 +1,6 @@
 package com.example.account.ui
 
 import android.app.Activity
-import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -12,16 +11,14 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.material.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.account.Constants
+import com.example.account.utils.Constants
 import com.example.account.model.Address
 import com.example.account.model.Invoice
 import com.example.account.model.InvoiceItem
@@ -43,7 +40,7 @@ class InvoiceDetailActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val invoice: Invoice = intent.getSerializableExtra("invoice") as Invoice
+        val invoice = intent.getSerializableExtra("invoice") as Invoice
 
         setContent {
             ActivityTemplate(
@@ -319,7 +316,7 @@ fun BottomBar(
             InvoiceStatus.Pending -> {
                 EditButton(invoice, invoiceDetailViewModel)
                 DeleteButton(invoice, invoiceDetailViewModel, activity)
-                MarkAsPaidButton(invoice, invoiceDetailViewModel)
+                MarkAsPaidButton(invoice, invoiceDetailViewModel, activity)
             }
             InvoiceStatus.Draft -> {
                 EditButton(invoice, invoiceDetailViewModel)
@@ -333,12 +330,17 @@ fun BottomBar(
 }
 
 @Composable
-fun MarkAsPaidButton(invoice: Invoice, invoiceDetailViewModel: InvoiceDetailViewModel) {
-    InvoiceButton(InvoiceButton.MarkAsPaid,
+fun MarkAsPaidButton(
+    invoice: Invoice,
+    invoiceDetailViewModel: InvoiceDetailViewModel,
+    activity: Activity
+) {
+    CustomButton(InvoiceButton.MarkAsPaid,
         Modifier
             .clip(RoundedCornerShape(90.dp))
             .clickable {
                 invoiceDetailViewModel.markInvoiceAsPaid(invoice)
+                activity.finish()
             })
 }
 
@@ -346,20 +348,21 @@ fun MarkAsPaidButton(invoice: Invoice, invoiceDetailViewModel: InvoiceDetailView
 fun DeleteButton(
     invoice: Invoice,
     invoiceDetailViewModel: InvoiceDetailViewModel,
-    activity: Activity
+    activity: Activity,
 ) {
-    InvoiceButton(InvoiceButton.Delete,
+    val openDialog = remember { mutableStateOf(false) }
+    DeleteDialog(invoice, invoiceDetailViewModel, activity, openDialog)
+    CustomButton(InvoiceButton.Delete,
         Modifier
             .clip(RoundedCornerShape(90.dp))
             .clickable {
-                invoiceDetailViewModel.deleteInvoice(invoice)
-                activity.finish()
+                openDialog.value = true
             })
 }
 
 @Composable
 fun EditButton(invoice: Invoice, invoiceDetailViewModel: InvoiceDetailViewModel) {
-    InvoiceButton(InvoiceButton.Edit,
+    CustomButton(InvoiceButton.Edit,
         Modifier
             .clip(RoundedCornerShape(90.dp))
             .clickable {
@@ -368,12 +371,12 @@ fun EditButton(invoice: Invoice, invoiceDetailViewModel: InvoiceDetailViewModel)
 }
 
 @Composable
-fun InvoiceButton(type: InvoiceButton, modifier: Modifier) {
-    var backgroundColor = MaterialTheme.colors.primary
-    var foregroundColor = MaterialTheme.colors.onPrimary
-    var text = "Mark as Paid"
-    var startPadding = 30.dp
-    var endPadding = 30.dp
+fun CustomButton(type: InvoiceButton? = null, modifier: Modifier) {
+    var backgroundColor = getCardOnCardColor()
+    var foregroundColor = MaterialTheme.colors.onBackground
+    var text = "Cancel"
+    var startPadding = 20.dp
+    var endPadding = 20.dp
     when (type) {
         InvoiceButton.Delete -> {
             backgroundColor = MaterialTheme.colors.error
@@ -389,7 +392,13 @@ fun InvoiceButton(type: InvoiceButton, modifier: Modifier) {
             startPadding = 20.dp
             endPadding = 20.dp
         }
-        else -> {}
+        InvoiceButton.MarkAsPaid -> {
+            backgroundColor = MaterialTheme.colors.primary
+            foregroundColor = MaterialTheme.colors.onPrimary
+            text = "Mark as Paid"
+            startPadding = 30.dp
+            endPadding = 30.dp
+        }
     }
     Box(
         modifier = modifier.background(color = backgroundColor)
@@ -400,6 +409,63 @@ fun InvoiceButton(type: InvoiceButton, modifier: Modifier) {
             style = MaterialTheme.typography.subtitle1,
             modifier = Modifier
                 .padding(top = 15.dp, bottom = 15.dp, start = startPadding, end = endPadding)
+        )
+    }
+}
+
+@Composable
+fun DeleteDialog(
+    invoice: Invoice,
+    invoiceDetailViewModel: InvoiceDetailViewModel,
+    activity: Activity,
+    openDialog: MutableState<Boolean>
+) {
+    if (openDialog.value) {
+        AlertDialog(
+            modifier = Modifier.clip(RoundedCornerShape(10.dp)),
+            onDismissRequest = {
+                openDialog.value = false
+            },
+            title = {
+                Text(
+                    modifier = Modifier.padding(bottom = 5.dp),
+                    text = "Confirm Deletion",
+                    fontSize = 22.sp,
+                    color = MaterialTheme.colors.onBackground,
+                )
+            },
+            text = {
+                Text(
+                    text = "Are you sure you want to delete invoice " +
+                            "#${invoice.id}? This action cannot be undone.",
+                    lineHeight = 20.sp,
+                    style = MaterialTheme.typography.subtitle1,
+                    color = MaterialTheme.colors.onSurface,
+                )
+            },
+            buttons = {
+                Row(
+                    modifier = Modifier
+                        .padding(bottom = 30.dp, end = 30.dp, start = 30.dp)
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End,
+                ) {
+                    CustomButton(modifier = Modifier
+                        .padding(end = 10.dp)
+                        .clip(RoundedCornerShape(90.dp))
+                        .clickable {
+                            openDialog.value = false
+                        })
+                    CustomButton(InvoiceButton.Delete,
+                        Modifier
+                            .clip(RoundedCornerShape(90.dp))
+                            .clickable {
+                                openDialog.value = false
+                                invoiceDetailViewModel.deleteInvoice(invoice)
+                                activity.finish()
+                            })
+                }
+            }
         )
     }
 }

@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.account.model.Invoice
 import com.example.account.repository.InvoiceRepository
+import com.example.account.utils.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -27,7 +28,10 @@ class InvoiceDetailViewModel @Inject constructor(
     }
 
     fun markInvoiceAsPaid(invoice: Invoice) {
-
+        viewModelScope.launch(Dispatchers.IO) {
+            invoice.status = Constants.paid
+            repository.markInvoiceAsPaid(invoice)
+        }
     }
 
 }

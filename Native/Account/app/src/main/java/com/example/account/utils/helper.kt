@@ -17,9 +17,9 @@ fun getNewInvoiceId(): String {
 
 fun getStatus(status: String): InvoiceStatus {
     when (status) {
-        "paid" -> return InvoiceStatus.Paid
-        "pending" -> return InvoiceStatus.Pending
-        "draft" -> return InvoiceStatus.Draft
+        Constants.paid -> return InvoiceStatus.Paid
+        Constants.pending -> return InvoiceStatus.Pending
+        Constants.draft -> return InvoiceStatus.Draft
     }
     return InvoiceStatus.Draft
 }

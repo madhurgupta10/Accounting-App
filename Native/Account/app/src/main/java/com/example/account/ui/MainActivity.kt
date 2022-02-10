@@ -27,7 +27,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.account.Constants
+import com.example.account.utils.Constants
 import com.example.account.R
 import com.example.account.model.Invoice
 import com.example.account.model.enums.InvoiceStatus

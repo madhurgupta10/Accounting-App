@@ -9,13 +9,13 @@ import java.io.Serializable
 @Entity(tableName = "invoices")
 data class Invoice(
     @PrimaryKey @SerializedName("id") var id: String = getNewInvoiceId(),
-    @SerializedName("createdAt") val invoiceDate: String,
-    @SerializedName("description") val description: String,
-    @SerializedName("paymentTerms") val paymentTerms: Int,
-    @SerializedName("clientName") val clientName: String,
-    @SerializedName("clientEmail") val clientEmail: String,
-    @SerializedName("status") val status: String,
-    @SerializedName("senderAddress") val senderAddress: Address,
-    @SerializedName("clientAddress") val clientAddress: Address,
-    @SerializedName("items") val items: List<InvoiceItem>,
+    @SerializedName("createdAt") var invoiceDate: String,
+    @SerializedName("description") var description: String,
+    @SerializedName("paymentTerms") var paymentTerms: Int,
+    @SerializedName("clientName") var clientName: String,
+    @SerializedName("clientEmail") var clientEmail: String,
+    @SerializedName("status") var status: String,
+    @SerializedName("senderAddress") var senderAddress: Address,
+    @SerializedName("clientAddress") var clientAddress: Address,
+    @SerializedName("items") var items: List<InvoiceItem>,
 ) : Serializable

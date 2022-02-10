@@ -21,4 +21,8 @@ class InvoiceRepository @Inject constructor(
         invoiceDao.deleteInvoice(invoice)
     }
 
+    suspend fun markInvoiceAsPaid(invoice: Invoice) {
+        invoiceDao.updateInvoice(invoice)
+    }
+
 }

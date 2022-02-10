@@ -18,8 +18,8 @@ import java.io.Serializable
 )
 data class InvoiceItem(
     @PrimaryKey(autoGenerate = true) var id: Int? = null,
-    @SerializedName("name") val name: String,
-    @SerializedName("quantity") val quantity: Int,
-    @SerializedName("price") val price: Float,
-    @ColumnInfo(index = true) val parentInvoiceId: String
+    @SerializedName("name") var name: String,
+    @SerializedName("quantity") var quantity: Int,
+    @SerializedName("price") var price: Float,
+    @ColumnInfo(index = true) var parentInvoiceId: String
 ) : Serializable
