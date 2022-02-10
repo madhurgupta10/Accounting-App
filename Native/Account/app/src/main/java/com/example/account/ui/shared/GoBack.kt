@@ -3,6 +3,7 @@ package com.example.account.ui.shared
 import android.app.Activity
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -17,6 +18,7 @@ import com.example.account.R
 @Composable
 fun GoBack(activity: Activity) {
     Row(modifier = Modifier
+        .fillMaxWidth()
         .clickable {
             activity.finish()
         }
