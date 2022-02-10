@@ -1,4 +1,4 @@
-package com.example.account.enums
+package com.example.account.model.enums
 
 enum class InvoiceStatus {
     Paid,

@@ -1,11 +1,11 @@
-package com.example.account
+package com.example.account.ui
 
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.Image
+import androidx.activity.viewModels
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -13,29 +13,45 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.Card
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.account.elements.ActivityTemplate
-import com.example.account.elements.InvoiceId
-import com.example.account.enums.InvoiceStatus
+import com.example.account.Constants
+import com.example.account.R
+import com.example.account.model.Invoice
+import com.example.account.model.enums.InvoiceStatus
+import com.example.account.ui.elements.ActivityTemplate
+import com.example.account.ui.elements.InvoiceId
 import com.example.account.ui.theme.*
+import com.example.account.utils.getDueDate
+import com.example.account.utils.getStatus
+import com.example.account.utils.getTotal
+import com.example.account.viewmodel.MainViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    private val mainViewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             ActivityTemplate(
                 content = {
-                    MainActivityContent(this)
+                    MainActivityContent(this, mainViewModel)
                 }
             )
         }
@@ -43,7 +59,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Body(modifier: Modifier, invoices: List<String>?, context: Context) {
+fun Body(modifier: Modifier, invoices: List<Invoice>?, context: Context) {
     if (invoices?.isNotEmpty() == true) {
         LazyColumn(
             modifier = Modifier
@@ -51,8 +67,8 @@ fun Body(modifier: Modifier, invoices: List<String>?, context: Context) {
                 .padding(Constants.outerPadding),
             verticalArrangement = Arrangement.spacedBy(15.dp),
         ) {
-            items(invoices) { item ->
-                InvoiceCard(context)
+            items(invoices) { invoice ->
+                InvoiceCard(context, invoice)
             }
         }
     } else {
@@ -61,7 +77,7 @@ fun Body(modifier: Modifier, invoices: List<String>?, context: Context) {
 }
 
 @Composable
-fun InvoiceCard(context: Context) {
+fun InvoiceCard(context: Context, invoice: Invoice) {
     Card(
         shape = Constants.cardShape,
         backgroundColor = MaterialTheme.colors.surface,
@@ -81,9 +97,9 @@ fun InvoiceCard(context: Context) {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                InvoiceId("RT3080")
+                InvoiceId(invoice.id)
                 Text(
-                    text = "Jensen Huang",
+                    text = invoice.clientName,
                     style = MaterialTheme.typography.subtitle1,
                     color = MaterialTheme.colors.onBackground
                 )
@@ -96,13 +112,13 @@ fun InvoiceCard(context: Context) {
             ) {
                 Column {
                     Text(
-                        text = "Due 19 Aug 2021",
+                        text = "Due ${getDueDate(invoice.invoiceDate, invoice.paymentTerms)}",
                         style = MaterialTheme.typography.subtitle1,
                         color = MaterialTheme.colors.onBackground,
                         modifier = Modifier.padding(bottom = 5.dp)
                     )
                     Text(
-                        text = "£ 1,800.90",
+                        text = getTotal(invoice.items),
                         style = MaterialTheme.typography.body1,
                         color = MaterialTheme.colors.onBackground
                     )
@@ -110,7 +126,7 @@ fun InvoiceCard(context: Context) {
                 StatusButton(
                     modifier = Modifier
                         .align(Alignment.CenterVertically),
-                    type = InvoiceStatus.Pending
+                    type = getStatus(invoice.status)
                 )
             }
         }
@@ -170,7 +186,8 @@ fun StatusButton(modifier: Modifier, type: InvoiceStatus) {
 }
 
 @Composable
-fun MainActivityContent(context: Context) {
+fun MainActivityContent(context: Context, mainViewModel: MainViewModel) {
+    val invoices by mainViewModel.invoices.observeAsState()
     Column(
         modifier = Modifier.fillMaxSize(),
     ) {
@@ -182,7 +199,7 @@ fun MainActivityContent(context: Context) {
                 .width(200.dp)
                 .height(IntrinsicSize.Min)
         ) {
-            InvoiceHeader(num = 5)
+            InvoiceHeader(num = invoices?.size)
             Buttons(modifier = Modifier.align(Alignment.CenterVertically))
         }
         Column(
@@ -192,7 +209,7 @@ fun MainActivityContent(context: Context) {
         ) {
             Body(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
-                invoices = listOf("1", "2", "3", "4", "5"),
+                invoices = invoices,
                 context = context
             )
         }
@@ -309,62 +326,5 @@ fun NoInvoiceBody(modifier: Modifier) {
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(top = 30.dp)
         )
-    }
-}
-
-@Composable
-fun TopAppBar() {
-    Row(
-        horizontalArrangement = Arrangement.SpaceBetween,
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(IntrinsicSize.Min)
-            .background(color = MaterialTheme.colors.surface)
-    ) {
-        Box(
-            modifier = Modifier
-                .clip(RoundedCornerShape(0.dp, 20.dp, 20.dp, 0.dp))
-                .width(60.dp)
-                .height(60.dp)
-                .background(
-                    Brush.verticalGradient(
-                        colors = listOf(
-                            MaterialTheme.colors.primary,
-                            MaterialTheme.colors.primaryVariant
-                        ),
-                        startY = 5.0f
-                    )
-                )
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.ic_logo), "Logo",
-                tint = MaterialTheme.colors.onPrimary,
-                modifier = Modifier
-                    .padding(start = 20.dp, end = 20.dp)
-                    .align(Alignment.Center)
-            )
-        }
-        Row {
-            Icon(
-                painter = painterResource(R.drawable.ic_icon_sun), "Change Theme",
-                tint = MaterialTheme.colors.onSurface,
-                modifier = Modifier
-                    .padding(start = 20.dp, end = 20.dp)
-                    .align(Alignment.CenterVertically)
-            )
-            Divider(
-                color = MaterialTheme.colors.onSurface,
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .width(0.2.dp)
-            )
-            Image(
-                painter = painterResource(R.drawable.image_avatar), "Profile Pic",
-                modifier = Modifier
-                    .padding(start = 20.dp, end = 20.dp)
-                    .clip(shape = CircleShape)
-                    .align(Alignment.CenterVertically)
-            )
-        }
     }
 }

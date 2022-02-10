@@ -1,33 +1,31 @@
-package com.example.account
+package com.example.account.ui
 
 import android.app.Activity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
-import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.account.elements.ActivityTemplate
-import com.example.account.elements.InvoiceId
-import com.example.account.enums.InvoiceButton
-import com.example.account.enums.InvoiceStatus
-import com.example.account.ui.theme.*
+import com.example.account.Constants
+import com.example.account.model.enums.InvoiceButton
+import com.example.account.model.enums.InvoiceStatus
+import com.example.account.ui.elements.ActivityTemplate
+import com.example.account.ui.elements.GoBack
+import com.example.account.ui.elements.InvoiceId
+import com.example.account.ui.theme.getCardOnCardBlackColor
+import com.example.account.ui.theme.getCardOnCardColor
 
 class InvoiceDetailActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -283,28 +281,6 @@ fun StatusCard() {
 }
 
 @Composable
-fun GoBack(activity: Activity) {
-    Row(modifier = Modifier
-        .clickable {
-            activity.finish()
-        }
-        .padding(top = 20.dp, start = 20.dp, end = 20.dp, bottom = 20.dp)
-    ) {
-        Icon(
-            painter = painterResource(R.drawable.ic_icon_arrow_left), "Go back",
-            tint = MaterialTheme.colors.primary,
-            modifier = Modifier
-                .padding(end = 20.dp)
-                .align(Alignment.CenterVertically)
-        )
-        Text(
-            "Go back", color = MaterialTheme.colors.onBackground,
-            style = MaterialTheme.typography.h3,
-        )
-    }
-}
-
-@Composable
 fun BottomBar(modifier: Modifier) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -315,14 +291,14 @@ fun BottomBar(modifier: Modifier) {
             .background(color = MaterialTheme.colors.surface)
             .padding(20.dp)
     ) {
-        MarkAsPaidButton(InvoiceButton.Edit)
-        MarkAsPaidButton(InvoiceButton.Delete)
-        MarkAsPaidButton(InvoiceButton.MarkAsPaid)
+        InvoiceButton(InvoiceButton.Edit)
+        InvoiceButton(InvoiceButton.Delete)
+        InvoiceButton(InvoiceButton.MarkAsPaid)
     }
 }
 
 @Composable
-fun MarkAsPaidButton(type: InvoiceButton) {
+fun InvoiceButton(type: InvoiceButton) {
     var backgroundColor = MaterialTheme.colors.primary
     var foregroundColor = MaterialTheme.colors.onPrimary
     var text = "Mark as Paid"

@@ -3,6 +3,7 @@
     package="com.example.account">
 
     <application
+        android:name=".BaseApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -10,12 +11,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Account">
         <activity
-            android:name=".InvoiceDetailActivity"
+            android:name=".ui.InvoiceDetailActivity"
             android:exported="false"
             android:label="@string/title_activity_invoice_detail"
             android:theme="@style/Theme.Account" />
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.Account">
             <intent-filter>
