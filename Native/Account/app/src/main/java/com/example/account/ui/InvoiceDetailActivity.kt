@@ -17,6 +17,8 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.account.utils.Constants
@@ -376,11 +378,11 @@ fun EditButton(invoice: Invoice, invoiceDetailViewModel: InvoiceDetailViewModel)
 
 @Composable
 fun CustomButton(type: InvoiceButton? = null, modifier: Modifier) {
-    var backgroundColor = getCardOnCardColor()
-    var foregroundColor = MaterialTheme.colors.onBackground
-    var text = "Cancel"
-    var startPadding = 20.dp
-    var endPadding = 20.dp
+    val backgroundColor: Color
+    val foregroundColor: Color
+    val text: String
+    val startPadding: Dp
+    val endPadding: Dp
     when (type) {
         InvoiceButton.Delete -> {
             backgroundColor = MaterialTheme.colors.error
@@ -402,6 +404,13 @@ fun CustomButton(type: InvoiceButton? = null, modifier: Modifier) {
             text = "Mark as Paid"
             startPadding = 30.dp
             endPadding = 30.dp
+        }
+        else -> {
+            backgroundColor = getCardOnCardColor()
+            foregroundColor = MaterialTheme.colors.onBackground
+            text = "Cancel"
+            startPadding = 20.dp
+            endPadding = 20.dp
         }
     }
     Box(
