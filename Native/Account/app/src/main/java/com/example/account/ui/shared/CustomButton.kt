@@ -57,22 +57,22 @@ fun CustomButton(type: InvoiceButton? = null, modifier: Modifier) {
             backgroundColor = MaterialTheme.colors.error
             foregroundColor = MaterialTheme.colors.onError
             text = "Discard"
-            startPadding = 15.dp
-            endPadding = 15.dp
+            startPadding = 12.dp
+            endPadding = 12.dp
         }
         InvoiceButton.SaveAsDraft -> {
             backgroundColor = getCardOnCardColor()
             foregroundColor = MaterialTheme.colors.onBackground
             text = "Save as Draft"
-            startPadding = 15.dp
-            endPadding = 15.dp
+            startPadding = 12.dp
+            endPadding = 12.dp
         }
         InvoiceButton.SaveAndSend -> {
             backgroundColor = MaterialTheme.colors.primary
             foregroundColor = MaterialTheme.colors.onPrimary
             text = "Save & Send"
-            startPadding = 15.dp
-            endPadding = 15.dp
+            startPadding = 12.dp
+            endPadding = 12.dp
         }
         InvoiceButton.SaveChanges -> {
             backgroundColor = MaterialTheme.colors.primary
