@@ -7,6 +7,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.ui.ExperimentalComposeUiApi
 import com.example.account.ui.newinvoice.components.ActivityContent
+import com.example.account.ui.newinvoice.components.BottomBar
 import com.example.account.ui.shared.ActivityTemplate
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -24,7 +25,10 @@ class NewInvoiceActivity : ComponentActivity() {
                     ActivityContent()
                 },
                 showGoBack = true,
-                activity = this
+                activity = this,
+                bottomBar = {
+                    BottomBar(this)
+                }
             )
         }
     }

@@ -3,5 +3,11 @@ package com.example.account.model.enums
 enum class InvoiceButton {
     MarkAsPaid,
     Edit,
-    Delete
+    Delete,
+    Cancel,
+    Discard,
+    SaveAsDraft,
+    SaveAndSend,
+    AddNewItem,
+    SaveChanges,
 }
