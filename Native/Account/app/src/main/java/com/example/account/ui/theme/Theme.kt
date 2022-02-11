@@ -9,31 +9,31 @@ import androidx.compose.ui.graphics.Color
 
 private val DarkColorPalette = darkColors(
     primary = ColorPrimary,
-    primaryVariant = Color2,
-    secondary = Color2,
-    secondaryVariant = Color2,
-    background = Color3,
-    surface = Color4,
-    error = ColorError,
+    primaryVariant = ColorSecondary,
+    secondary = ColorSecondary,
+    secondaryVariant = ColorSecondary,
+    background = ColorBackgroundDark,
+    surface = ColorSurfaceDark,
+    error = ColorErrorDark,
     onPrimary = ColorWhite,
     onSecondary = ColorWhite,
     onBackground = ColorWhite,
-    onSurface = Color5,
+    onSurface = ColorOnSurfaceDark,
     onError = ColorWhite
 )
 
 private val LightColorPalette = lightColors(
     primary = ColorPrimary,
-    primaryVariant = Color2,
-    secondary = Color2,
-    secondaryVariant = Color2,
-    background = Color3,
-    surface = Color4,
-    error = ColorError,
+    primaryVariant = ColorSecondary,
+    secondary = ColorSecondary,
+    secondaryVariant = ColorSecondary,
+    background = ColorBackgroundLight,
+    surface = ColorWhite,
+    error = ColorErrorLight,
     onPrimary = ColorWhite,
     onSecondary = ColorWhite,
-    onBackground = ColorWhite,
-    onSurface = Color5,
+    onBackground = ColorBackgroundDark,
+    onSurface = ColorOnSurfaceDark,
     onError = ColorWhite
 )
 
@@ -51,7 +51,7 @@ fun getCardOnCardBlackColor(darkTheme: Boolean = isSystemInDarkTheme()): Color {
     return if (darkTheme) {
         ColorBlack
     } else {
-        ColorWhite
+        ColorBackgroundLight
     }
 }
 

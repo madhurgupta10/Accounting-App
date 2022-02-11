@@ -55,7 +55,7 @@ fun AddNewButton(modifier: Modifier, context: Context) {
                 )
             }
             Text(
-                "New", color = MaterialTheme.colors.onBackground,
+                "New", color = MaterialTheme.colors.onPrimary,
                 style = MaterialTheme.typography.button,
                 modifier = Modifier
                     .align(Alignment.CenterVertically)
