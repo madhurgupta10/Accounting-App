@@ -19,7 +19,7 @@ fun CustomDropDownInput(
 ) {
     val options = listOf(1, 7, 30)
     var expanded by remember { mutableStateOf(false) }
-    var selectedOptionText by remember { mutableStateOf(options.indexOf(value)) }
+    var selectedOptionText by remember { mutableStateOf(options[options.indexOf(value)]) }
 
     Column(
         modifier
@@ -44,7 +44,7 @@ fun CustomDropDownInput(
             TextField(
                 modifier = Modifier.fillMaxWidth(),
                 readOnly = true,
-                value = selectedOptionText.toString(),
+                value = "Next $selectedOptionText Days",
                 shape = RoundedCornerShape(4.dp),
                 textStyle = MaterialTheme.typography.h3,
                 onValueChange = {},
@@ -78,7 +78,7 @@ fun CustomDropDownInput(
                             expanded = false
                         }
                     ) {
-                        Text(text = selectionOption.toString())
+                        Text(text = "Next $selectionOption Days")
                     }
                 }
             }

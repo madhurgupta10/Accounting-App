@@ -68,7 +68,7 @@ fun CustomCalendarInput(
             Row(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(start = 13.dp, top = 20.dp, bottom = 20.dp, end = 13.dp),
+                    .padding(start = 13.dp, top = 20.dp, bottom = 20.dp, end = 18.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 Text(
