@@ -55,6 +55,9 @@ fun ActivityContent(toggleBottomBar: (value: Boolean) -> Unit) {
             InvoiceDetailInput(toggleBottomBar)
         }
         item {
+            InvoiceItemInput(toggleBottomBar)
+        }
+        item {
             AddNewItemButton(
                 modifier = Modifier
                     .fillMaxWidth()

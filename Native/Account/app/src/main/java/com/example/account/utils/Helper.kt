@@ -62,6 +62,11 @@ fun getItemTotal(item: InvoiceItem): String {
     )
 }
 
+fun getItemTotal(price: Double, quantity: Int): String {
+    val total = price * quantity
+    return total.toBigDecimal().setScale(2, RoundingMode.HALF_DOWN).toDouble().toString()
+}
+
 fun getPrice(price: Float): String {
     return getCurrencyInstance(Locale.UK)
         .format(price.toBigDecimal().setScale(2, RoundingMode.HALF_DOWN).toDouble()).replace(
