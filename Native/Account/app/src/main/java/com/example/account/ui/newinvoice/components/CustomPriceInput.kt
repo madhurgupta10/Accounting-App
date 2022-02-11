@@ -28,7 +28,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun CustomPriceInput(
     header: String,
-    value: Double,
+    value: Float,
     modifier: Modifier,
     toggleBottomBar: (value: Boolean) -> Unit,
     onChange: (String) -> Unit

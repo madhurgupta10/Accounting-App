@@ -16,7 +16,7 @@ import com.example.account.model.Address
 @ExperimentalMaterialApi
 @Composable
 fun InvoiceDetailInput(toggleBottomBar: (value: Boolean) -> Unit) {
-    Column(modifier = Modifier.padding(bottom = 60.dp)) {
+    Column(modifier = Modifier.padding(bottom = 50.dp)) {
         Heading("New Invoice")
         SubHeading("Bill From")
         AddressInput(

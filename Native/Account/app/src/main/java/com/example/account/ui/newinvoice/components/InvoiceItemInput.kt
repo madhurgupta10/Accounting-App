@@ -1,29 +1,34 @@
 package com.example.account.ui.newinvoice.components
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.account.R
+import com.example.account.model.InvoiceItem
 import com.example.account.utils.getItemTotal
 
 @ExperimentalFoundationApi
 @ExperimentalComposeUiApi
 @Composable
-fun InvoiceItemInput(toggleBottomBar: (value: Boolean) -> Unit) {
+fun InvoiceItemInput(
+    item: InvoiceItem,
+    toggleBottomBar: (value: Boolean) -> Unit,
+    modifier: Modifier
+) {
 
-    var qty by rememberSaveable { mutableStateOf(0) }
-    var price by rememberSaveable { mutableStateOf(0.0) }
+    var qty by rememberSaveable { mutableStateOf(item.quantity) }
+    var price by rememberSaveable { mutableStateOf(item.price) }
     var total by rememberSaveable { mutableStateOf(getItemTotal(price, qty)) }
 
     Column(modifier = Modifier.padding(bottom = 30.dp)) {
@@ -66,7 +71,7 @@ fun InvoiceItemInput(toggleBottomBar: (value: Boolean) -> Unit) {
                             .replaceFirst("^0*", "")
                             .trim()
                             .substringBefore(" ")
-                            .toDoubleOrNull()
+                            .toFloatOrNull()
                     if (num != null) {
                         price = num
                         total = getItemTotal(price, qty)
@@ -83,9 +88,9 @@ fun InvoiceItemInput(toggleBottomBar: (value: Boolean) -> Unit) {
             Icon(
                 painter = painterResource(R.drawable.ic_icon_delete), "delete",
                 tint = MaterialTheme.colors.onSurface,
-                modifier = Modifier
+                modifier = modifier
                     .align(Alignment.CenterVertically)
-                    .padding(end = 10.dp)
+                    .padding(top = 45.dp, end = 10.dp)
             )
         }
     }

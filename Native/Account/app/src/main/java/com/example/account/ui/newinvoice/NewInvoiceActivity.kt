@@ -8,6 +8,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.ExperimentalComposeUiApi
+import com.example.account.model.Invoice
 import com.example.account.ui.newinvoice.components.ActivityContent
 import com.example.account.ui.newinvoice.components.BottomBar
 import com.example.account.ui.shared.ActivityTemplate
@@ -25,9 +26,12 @@ class NewInvoiceActivity : ComponentActivity() {
             val bottomBarState = rememberSaveable { (mutableStateOf(true)) }
             ActivityTemplate(
                 content = {
-                    ActivityContent {
-                        bottomBarState.value = it
-                    }
+                    ActivityContent(
+                        toggleBottomBar = {
+                            bottomBarState.value = it
+                        },
+                        invoice = Invoice()
+                    )
                 },
                 showGoBack = true,
                 activity = this,
