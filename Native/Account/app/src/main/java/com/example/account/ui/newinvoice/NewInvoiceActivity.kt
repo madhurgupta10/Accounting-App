@@ -5,6 +5,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import com.example.account.ui.newinvoice.components.ActivityContent
 import com.example.account.ui.newinvoice.components.BottomBar
@@ -20,14 +22,19 @@ class NewInvoiceActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
+            val bottomBarState = rememberSaveable { (mutableStateOf(true)) }
             ActivityTemplate(
                 content = {
-                    ActivityContent()
+                    ActivityContent {
+                        bottomBarState.value = it
+                    }
                 },
                 showGoBack = true,
                 activity = this,
                 bottomBar = {
-                    BottomBar(this)
+                    if (bottomBarState.value) {
+                        BottomBar(this)
+                    }
                 }
             )
         }

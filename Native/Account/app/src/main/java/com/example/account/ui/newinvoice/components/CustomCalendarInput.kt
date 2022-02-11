@@ -12,6 +12,7 @@ import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.account.R
@@ -19,16 +20,20 @@ import com.example.account.utils.getInvoiceDate
 import com.vanpra.composematerialdialogs.MaterialDialog
 import com.vanpra.composematerialdialogs.datetime.date.datepicker
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun CustomCalendarInput(
     header: String,
     value: String,
-    modifier: Modifier
+    modifier: Modifier,
+    toggleBottomBar: (value: Boolean) -> Unit,
 ) {
     var text by remember { mutableStateOf(value) }
     val dialogState = rememberMaterialDialogState()
-
+    val focusManager = LocalFocusManager.current
+    val coroutineScope = rememberCoroutineScope()
     MaterialDialog(
         dialogState = dialogState,
         buttons = {
@@ -49,7 +54,12 @@ fun CustomCalendarInput(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(color = Color.Transparent)
             ) {
-                dialogState.show()
+                coroutineScope.launch {
+                    focusManager.clearFocus()
+                    delay(20)
+                    toggleBottomBar(true)
+                    dialogState.show()
+                }
             }
     ) {
         Text(

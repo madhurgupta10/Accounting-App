@@ -6,21 +6,26 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.account.R
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @ExperimentalMaterialApi
 @Composable
 fun CustomDropDownInput(
     header: String,
     value: Int,
-    modifier: Modifier
+    modifier: Modifier,
+    toggleBottomBar: (value: Boolean) -> Unit,
 ) {
     val options = listOf(1, 7, 30)
     var expanded by remember { mutableStateOf(false) }
     var selectedOptionText by remember { mutableStateOf(options[options.indexOf(value)]) }
-
+    val focusManager = LocalFocusManager.current
+    val coroutineScope = rememberCoroutineScope()
     Column(
         modifier
             .padding(bottom = 20.dp)
@@ -38,7 +43,12 @@ fun CustomDropDownInput(
             modifier = Modifier.fillMaxWidth(),
             expanded = expanded,
             onExpandedChange = {
-                expanded = !expanded
+                coroutineScope.launch {
+                    focusManager.clearFocus()
+                    delay(20)
+                    toggleBottomBar(true)
+                    expanded = !expanded
+                }
             }
         ) {
             TextField(

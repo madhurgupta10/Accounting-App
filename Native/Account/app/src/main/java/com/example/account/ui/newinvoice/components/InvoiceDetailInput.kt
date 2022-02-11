@@ -15,7 +15,7 @@ import com.example.account.model.Address
 @ExperimentalComposeUiApi
 @ExperimentalMaterialApi
 @Composable
-fun InvoiceDetailInput() {
+fun InvoiceDetailInput(toggleBottomBar: (value: Boolean) -> Unit) {
     Column(modifier = Modifier.padding(bottom = 60.dp)) {
         Heading("New Invoice")
         SubHeading("Bill From")
@@ -25,12 +25,14 @@ fun InvoiceDetailInput() {
                 city = "London",
                 postCode = "E1 3EZ",
                 country = "United Kingdom",
-            )
+            ),
+            toggleBottomBar = toggleBottomBar
         )
         SubHeading("Bill To")
         ClientInput(
             name = "Alex Grim",
-            email = "alexgrim@mail.com"
+            email = "alexgrim@mail.com",
+            toggleBottomBar = toggleBottomBar
         )
         AddressInput(
             address = Address(
@@ -38,22 +40,26 @@ fun InvoiceDetailInput() {
                 city = "London",
                 postCode = "E1 3EZ",
                 country = "United Kingdom",
-            )
+            ),
+            toggleBottomBar = toggleBottomBar
         )
         CustomCalendarInput(
             header = "Invoice Date",
             value = " 21 Aug 2021",
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            toggleBottomBar = toggleBottomBar
         )
         CustomDropDownInput(
             header = "Payment Terms",
             value = 1,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            toggleBottomBar = toggleBottomBar
         )
         CustomTextInput(
             header = "Project Description",
             value = "Graphic Design",
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            toggleBottomBar = toggleBottomBar
         )
     }
 }

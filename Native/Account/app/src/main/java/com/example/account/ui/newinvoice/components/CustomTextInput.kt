@@ -28,7 +28,8 @@ import kotlinx.coroutines.launch
 fun CustomTextInput(
     header: String,
     value: String,
-    modifier: Modifier
+    modifier: Modifier,
+    toggleBottomBar: (value: Boolean) -> Unit,
 ) {
     var text by remember { mutableStateOf(value) }
     val coroutineScope = rememberCoroutineScope()
@@ -56,14 +57,19 @@ fun CustomTextInput(
                 .onFocusEvent {
                     if (it.isFocused) {
                         coroutineScope.launch {
-                            delay(10)
+                            toggleBottomBar(false)
+                            delay(20)
                             bringIntoViewRequester.bringIntoView()
                         }
                     }
                 },
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(onDone = {
-                focusManager.clearFocus()
+                coroutineScope.launch {
+                    focusManager.clearFocus()
+                    delay(20)
+                    toggleBottomBar(true)
+                }
             }),
             value = text,
             textStyle = MaterialTheme.typography.h3,

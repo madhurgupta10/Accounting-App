@@ -14,12 +14,13 @@ import com.example.account.model.Address
 @ExperimentalFoundationApi
 @ExperimentalComposeUiApi
 @Composable
-fun AddressInput(address: Address) {
+fun AddressInput(address: Address, toggleBottomBar: (value: Boolean) -> Unit) {
     Column {
         CustomTextInput(
             header = "Street Address",
             value = address.street,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            toggleBottomBar = toggleBottomBar
         )
         Row(modifier = Modifier.fillMaxWidth()) {
             CustomTextInput(
@@ -27,20 +28,23 @@ fun AddressInput(address: Address) {
                 value = address.city,
                 modifier = Modifier
                     .weight(1f)
-                    .padding(end = 15.dp)
+                    .padding(end = 15.dp),
+                toggleBottomBar = toggleBottomBar
             )
             CustomTextInput(
                 header = "Postal Code",
                 value = address.postCode,
                 modifier = Modifier
                     .weight(1f)
-                    .padding(start = 15.dp)
+                    .padding(start = 15.dp),
+                toggleBottomBar = toggleBottomBar
             )
         }
         CustomTextInput(
             header = "Country",
             value = address.country,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            toggleBottomBar = toggleBottomBar
         )
     }
 }
