@@ -28,9 +28,9 @@ class InvoiceDetailActivity : ComponentActivity() {
                         ActivityContent(it)
                     }
                 },
-                bottomBar = { modifier ->
+                bottomBar = {
                     invoice.value?.let {
-                        BottomBar(modifier, it, invoiceDetailViewModel, this)
+                        BottomBar(it, invoiceDetailViewModel, this)
                     }
                 },
                 showGoBack = true,

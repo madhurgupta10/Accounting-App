@@ -63,6 +63,9 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_aware_version"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_aware_version"
     implementation "androidx.room:room-ktx:$room_version"
+    implementation "com.google.accompanist:accompanist-insets:$accompanist_version"
+    implementation "com.google.accompanist:accompanist-insets-ui:$accompanist_version"
+    implementation "io.github.vanpra.compose-material-dialogs:datetime:0.6.3"
 
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
     kapt "androidx.room:room-compiler:$room_version"

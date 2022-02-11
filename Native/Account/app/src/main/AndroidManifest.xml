@@ -13,15 +13,18 @@
         <activity
             android:name=".ui.newinvoice.NewInvoiceActivity"
             android:exported="false"
-            android:theme="@style/Theme.Account" />
+            android:theme="@style/Theme.Account"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.invoicedetail.InvoiceDetailActivity"
             android:exported="false"
-            android:theme="@style/Theme.Account" />
+            android:theme="@style/Theme.Account"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.main.MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.Account">
+            android:theme="@style/Theme.Account"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

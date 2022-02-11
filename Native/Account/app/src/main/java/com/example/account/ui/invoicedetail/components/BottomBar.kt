@@ -15,7 +15,6 @@ import com.example.account.viewmodel.InvoiceDetailViewModel
 
 @Composable
 fun BottomBar(
-    modifier: Modifier,
     invoice: Invoice,
     invoiceDetailViewModel: InvoiceDetailViewModel,
     activity: Activity
@@ -23,7 +22,7 @@ fun BottomBar(
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceEvenly,
-        modifier = modifier
+        modifier = Modifier
             .fillMaxWidth()
             .height(IntrinsicSize.Min)
             .background(color = MaterialTheme.colors.surface)

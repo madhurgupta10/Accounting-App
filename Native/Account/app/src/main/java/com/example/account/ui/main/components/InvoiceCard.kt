@@ -22,11 +22,11 @@ import com.example.account.utils.getStatus
 import com.example.account.utils.getTotal
 
 @Composable
-fun InvoiceCard(context: Context, invoice: Invoice) {
+fun InvoiceCard(context: Context, invoice: Invoice, modifier: Modifier) {
     Card(
         shape = Constants.cardShape,
         backgroundColor = MaterialTheme.colors.surface,
-        modifier = Modifier
+        modifier = modifier
             .clip(Constants.cardShape)
             .clickable {
                 val intent = Intent(context, InvoiceDetailActivity::class.java)

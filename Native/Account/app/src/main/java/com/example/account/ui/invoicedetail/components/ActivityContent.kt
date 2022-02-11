@@ -6,7 +6,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import com.example.account.model.Invoice
 import com.example.account.utils.Constants
 import com.example.account.utils.getStatus
@@ -16,7 +15,6 @@ fun ActivityContent(invoice: Invoice) {
     Column(
         modifier = Modifier
             .padding(
-                top = 120.dp,
                 bottom = Constants.outerPadding,
                 start = Constants.outerPadding,
                 end = Constants.outerPadding
