@@ -1,11 +1,7 @@
 # Accounting App
-## An Android app built with Kotlin, Material, Jetpack Compose, Hilt, Room, Coroutines, Data-Store, MVVM-Clean Architecture and JUnit tests
+#### An Android app built with Kotlin, Material, Jetpack Compose, Hilt, Room, Coroutines, Data-Store, MVVM-Clean Architecture and JUnit tests
 
-</br>
-
-### 🎨 Design files are available in [/design](design) folder if you want to try it yourself.
-
-</br>
+#### 🎨 Design files are available in [/design](design) folder if you want to try it yourself.
 
 ## Uses
 * [Kotlin](https://developer.android.com/kotlin)
