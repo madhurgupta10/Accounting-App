@@ -24,6 +24,18 @@ fun getStatus(status: String): InvoiceStatus {
     return InvoiceStatus.Draft
 }
 
+fun getInvoiceDateForDbFormat(invoiceDate: String): String {
+    return try {
+        val originalFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
+        val calendar: Calendar = Calendar.getInstance()
+        calendar.time = originalFormat.parse(invoiceDate)
+        val newFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        return newFormat.format(calendar.time)
+    } catch (e: Exception) {
+        ""
+    }
+}
+
 fun getInvoiceDate(invoiceDate: String): String {
     return try {
         val originalFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())

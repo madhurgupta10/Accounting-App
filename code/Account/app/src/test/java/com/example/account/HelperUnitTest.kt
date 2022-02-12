@@ -46,6 +46,18 @@ class HelperUnitTest {
     }
 
     @Test
+    fun test_getInvoiceDateForDbFormat_valid() {
+        val date = getInvoiceDateForDbFormat("01 Jan 2000")
+        assertEquals(date, "2000-01-01")
+    }
+
+    @Test
+    fun test_getInvoiceDateForDbFormat_invalid() {
+        val date = getInvoiceDateForDbFormat("234234234234")
+        assertEquals(date, "")
+    }
+
+    @Test
     fun test_getDueDate_valid() {
         val date = getDueDate("2000-01-01", 2)
         assertEquals(date, "03 Jan 2000")

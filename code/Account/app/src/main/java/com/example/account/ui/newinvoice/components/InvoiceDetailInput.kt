@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.account.model.Invoice
 import com.example.account.utils.getInvoiceDate
+import com.example.account.utils.getInvoiceDateForDbFormat
 import com.vanpra.composematerialdialogs.datetime.date.datepicker
 
 @ExperimentalFoundationApi
@@ -39,7 +40,7 @@ fun InvoiceDetailInput(
     var clientAddressPostCode by rememberSaveable { mutableStateOf(invoice.clientAddress.postCode) }
     var clientAddressCountry by rememberSaveable { mutableStateOf(invoice.clientAddress.country) }
 
-    var invoiceDate by rememberSaveable { mutableStateOf(invoice.invoiceDate) }
+    var invoiceDate by rememberSaveable { mutableStateOf( getInvoiceDate(invoice.invoiceDate)) }
 
     var paymentTerms by rememberSaveable { mutableStateOf(invoice.paymentTerms) }
 
@@ -116,7 +117,7 @@ fun InvoiceDetailInput(
             content = {
                 datepicker {
                     invoiceDate = getInvoiceDate(it.toString())
-                    invoice.invoiceDate = invoiceDate
+                    invoice.invoiceDate = getInvoiceDateForDbFormat(invoiceDate)
                 }
             }
         )
