@@ -9,14 +9,16 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.example.account.model.enums.InvoiceButton
 import com.example.account.ui.shared.CustomButton
+import com.example.account.viewmodel.NewInvoiceViewModel
 
 @Composable
-fun SaveAndSendButton(activity: Activity) {
+fun SaveAndSendButton(activity: Activity, newInvoiceViewModel: NewInvoiceViewModel) {
     CustomButton(
         InvoiceButton.SaveAndSend,
         Modifier
             .clip(RoundedCornerShape(90.dp))
             .clickable {
+                newInvoiceViewModel.createInvoice()
                 activity.finish()
             })
 }

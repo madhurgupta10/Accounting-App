@@ -9,42 +9,55 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.account.model.Address
 
 @ExperimentalFoundationApi
 @ExperimentalComposeUiApi
 @Composable
-fun AddressInput(address: Address, toggleBottomBar: (value: Boolean) -> Unit) {
+fun AddressInput(
+    street: String,
+    city: String,
+    postCode: String,
+    country: String,
+    onClickStreet: (String) -> Unit,
+    onClickCity: (String) -> Unit,
+    onClickPostCode: (String) -> Unit,
+    onClickCountry: (String) -> Unit,
+    toggleBottomBar: (value: Boolean) -> Unit
+) {
     Column {
         CustomTextInput(
             header = "Street Address",
-            value = address.street,
+            value = street,
             modifier = Modifier.fillMaxWidth(),
-            toggleBottomBar = toggleBottomBar
+            toggleBottomBar = toggleBottomBar,
+            onClick = onClickStreet
         )
         Row(modifier = Modifier.fillMaxWidth()) {
             CustomTextInput(
                 header = "City",
-                value = address.city,
+                value = city,
                 modifier = Modifier
                     .weight(1f)
                     .padding(end = 15.dp),
-                toggleBottomBar = toggleBottomBar
+                toggleBottomBar = toggleBottomBar,
+                onClick = onClickCity
             )
             CustomTextInput(
                 header = "Postal Code",
-                value = address.postCode,
+                value = postCode,
                 modifier = Modifier
                     .weight(1f)
                     .padding(start = 15.dp),
-                toggleBottomBar = toggleBottomBar
+                toggleBottomBar = toggleBottomBar,
+                onClick = onClickPostCode
             )
         }
         CustomTextInput(
             header = "Country",
-            value = address.country,
+            value = country,
             modifier = Modifier.fillMaxWidth(),
-            toggleBottomBar = toggleBottomBar
+            toggleBottomBar = toggleBottomBar,
+            onClick = onClickCountry
         )
     }
 }

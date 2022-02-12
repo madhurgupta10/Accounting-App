@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import com.example.account.model.Invoice
 import com.example.account.model.InvoiceItem
 import com.example.account.utils.Constants
+import com.example.account.viewmodel.NewInvoiceViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -31,10 +32,15 @@ import kotlinx.coroutines.launch
 @ExperimentalComposeUiApi
 @ExperimentalMaterialApi
 @Composable
-fun ActivityContent(invoice: Invoice, toggleBottomBar: (value: Boolean) -> Unit) {
+fun ActivityContent(
+    toggleBottomBar: (value: Boolean) -> Unit,
+    newInvoiceViewModel: NewInvoiceViewModel
+) {
     val focusManager = LocalFocusManager.current
     val coroutineScope = rememberCoroutineScope()
     val items: MutableList<InvoiceItem> = remember { mutableStateListOf() }
+    val invoice: Invoice = newInvoiceViewModel.invoice
+    val isNew = newInvoiceViewModel.isNew
     items.addAll(invoice.items)
     LazyColumn(
         modifier = Modifier
@@ -56,7 +62,7 @@ fun ActivityContent(invoice: Invoice, toggleBottomBar: (value: Boolean) -> Unit)
             }
     ) {
         item {
-            InvoiceDetailInput(toggleBottomBar)
+            InvoiceDetailInput(invoice = invoice, isNew = isNew, toggleBottomBar = toggleBottomBar)
         }
         if (items.isNotEmpty()) {
             item {
@@ -67,6 +73,7 @@ fun ActivityContent(invoice: Invoice, toggleBottomBar: (value: Boolean) -> Unit)
             InvoiceItemInput(item, toggleBottomBar, modifier = Modifier
                 .clickable {
                     items.remove(item)
+                    invoice.items = items
                 }
                 .animateItemPlacement()
             )
@@ -79,6 +86,7 @@ fun ActivityContent(invoice: Invoice, toggleBottomBar: (value: Boolean) -> Unit)
                     .clip(RoundedCornerShape(90.dp))
                     .clickable {
                         items.add(InvoiceItem(parentInvoiceId = invoice.id))
+                        invoice.items = items
                     }
                     .animateItemPlacement()
             )

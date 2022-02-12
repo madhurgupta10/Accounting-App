@@ -58,12 +58,14 @@ fun DeleteDialog(
                         .fillMaxWidth(),
                     horizontalArrangement = Arrangement.End,
                 ) {
-                    CustomButton(modifier = Modifier
-                        .padding(end = 10.dp)
-                        .clip(RoundedCornerShape(90.dp))
-                        .clickable {
-                            openDialog.value = false
-                        })
+                    CustomButton(
+                        InvoiceButton.Cancel,
+                        Modifier
+                            .padding(end = 10.dp)
+                            .clip(RoundedCornerShape(90.dp))
+                            .clickable {
+                                openDialog.value = false
+                            })
                     CustomButton(
                         InvoiceButton.Delete,
                         Modifier

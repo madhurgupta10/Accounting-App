@@ -10,19 +10,27 @@ import androidx.compose.ui.Modifier
 @ExperimentalFoundationApi
 @ExperimentalComposeUiApi
 @Composable
-fun ClientInput(name: String, email: String, toggleBottomBar: (value: Boolean) -> Unit) {
+fun ClientInput(
+    name: String,
+    email: String,
+    toggleBottomBar: (value: Boolean) -> Unit,
+    onClickName: (String) -> Unit,
+    onClickEmail: (String) -> Unit
+) {
     Column {
         CustomTextInput(
             header = "Client's Name",
             value = name,
             modifier = Modifier.fillMaxWidth(),
-            toggleBottomBar = toggleBottomBar
+            toggleBottomBar = toggleBottomBar,
+            onClick = onClickName
         )
         CustomTextInput(
             header = "Client's Email",
             value = email,
             modifier = Modifier.fillMaxWidth(),
-            toggleBottomBar = toggleBottomBar
+            toggleBottomBar = toggleBottomBar,
+            onClick = onClickEmail
         )
     }
 }

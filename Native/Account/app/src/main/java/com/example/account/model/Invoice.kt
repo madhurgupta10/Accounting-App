@@ -3,6 +3,7 @@ package com.example.account.model
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.account.utils.Constants
+import com.example.account.utils.Constants.Companion.options
 import com.example.account.utils.getNewInvoiceId
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
@@ -12,7 +13,7 @@ data class Invoice(
     @PrimaryKey @SerializedName("id") var id: String = getNewInvoiceId(),
     @SerializedName("createdAt") var invoiceDate: String = "",
     @SerializedName("description") var description: String = "",
-    @SerializedName("paymentTerms") var paymentTerms: Int = 1,
+    @SerializedName("paymentTerms") var paymentTerms: Int = options[0],
     @SerializedName("clientName") var clientName: String = "",
     @SerializedName("clientEmail") var clientEmail: String = "",
     @SerializedName("status") var status: String = Constants.draft,

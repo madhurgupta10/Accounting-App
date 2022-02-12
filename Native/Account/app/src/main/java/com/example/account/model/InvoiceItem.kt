@@ -13,7 +13,8 @@ import java.io.Serializable
         entity = Invoice::class,
         parentColumns = ["id"],
         childColumns = ["parentInvoiceId"],
-        onDelete = ForeignKey.CASCADE
+        onDelete = ForeignKey.CASCADE,
+        onUpdate = ForeignKey.CASCADE,
     )]
 )
 data class InvoiceItem(

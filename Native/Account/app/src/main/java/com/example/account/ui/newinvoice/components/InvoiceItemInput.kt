@@ -27,6 +27,8 @@ fun InvoiceItemInput(
     modifier: Modifier
 ) {
 
+    var name by rememberSaveable { mutableStateOf(item.name) }
+
     var qty by rememberSaveable { mutableStateOf(item.quantity) }
     var price by rememberSaveable { mutableStateOf(item.price) }
     var total by rememberSaveable { mutableStateOf(getItemTotal(price, qty)) }
@@ -34,9 +36,13 @@ fun InvoiceItemInput(
     Column(modifier = Modifier.padding(bottom = 30.dp)) {
         CustomTextInput(
             header = "Item Name",
-            value = "Banner Design",
+            value = name,
             modifier = Modifier.fillMaxWidth(),
-            toggleBottomBar = toggleBottomBar
+            toggleBottomBar = toggleBottomBar,
+            onClick = {
+                name = it
+                item.name = name
+            }
         )
         Row(modifier = Modifier.fillMaxWidth()) {
             CustomNumberInput(
@@ -54,6 +60,7 @@ fun InvoiceItemInput(
                             .toIntOrNull()
                     if (num != null) {
                         qty = num
+                        item.quantity = qty
                         total = getItemTotal(price, qty)
                     }
                 }
@@ -62,7 +69,7 @@ fun InvoiceItemInput(
                 header = "Price",
                 value = price,
                 modifier = Modifier
-                    .weight(1f)
+                    .weight(1.1f)
                     .padding(start = 10.dp, end = 10.dp),
                 toggleBottomBar = toggleBottomBar,
                 onChange = {
@@ -74,6 +81,7 @@ fun InvoiceItemInput(
                             .toFloatOrNull()
                     if (num != null) {
                         price = num
+                        item.price = price
                         total = getItemTotal(price, qty)
                     }
                 }

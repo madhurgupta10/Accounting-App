@@ -11,7 +11,9 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusEvent
@@ -30,8 +32,8 @@ fun CustomTextInput(
     value: String,
     modifier: Modifier,
     toggleBottomBar: (value: Boolean) -> Unit,
+    onClick: (String) -> Unit
 ) {
-    var text by remember { mutableStateOf(value) }
     val coroutineScope = rememberCoroutineScope()
     val bringIntoViewRequester = remember { BringIntoViewRequester() }
     val focusManager = LocalFocusManager.current
@@ -71,11 +73,9 @@ fun CustomTextInput(
                     toggleBottomBar(true)
                 }
             }),
-            value = text,
+            value = value,
             textStyle = MaterialTheme.typography.h3,
-            onValueChange = {
-                text = it
-            },
+            onValueChange = onClick,
             colors = TextFieldDefaults.textFieldColors(
                 textColor = MaterialTheme.colors.onBackground,
                 disabledTextColor = Color.Transparent,

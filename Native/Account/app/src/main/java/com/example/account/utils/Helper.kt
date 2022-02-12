@@ -25,20 +25,28 @@ fun getStatus(status: String): InvoiceStatus {
 }
 
 fun getInvoiceDate(invoiceDate: String): String {
-    val originalFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-    val calendar: Calendar = Calendar.getInstance()
-    calendar.time = originalFormat.parse(invoiceDate)
-    val newFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
-    return newFormat.format(calendar.time)
+    return try {
+        val originalFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val calendar: Calendar = Calendar.getInstance()
+        calendar.time = originalFormat.parse(invoiceDate)
+        val newFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
+        return newFormat.format(calendar.time)
+    } catch (e: Exception) {
+        ""
+    }
 }
 
 fun getDueDate(invoiceDate: String, paymentTerms: Int): String {
-    val originalFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-    val calendar: Calendar = Calendar.getInstance()
-    calendar.time = originalFormat.parse(invoiceDate)
-    calendar.add(Calendar.DATE, paymentTerms)
-    val newFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
-    return newFormat.format(calendar.time)
+    return try {
+        val originalFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val calendar: Calendar = Calendar.getInstance()
+        calendar.time = originalFormat.parse(invoiceDate)
+        calendar.add(Calendar.DATE, paymentTerms)
+        val newFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
+        newFormat.format(calendar.time)
+    } catch (e: Exception) {
+        ""
+    }
 }
 
 fun getTotal(items: List<InvoiceItem>): String {

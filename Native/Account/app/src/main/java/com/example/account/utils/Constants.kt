@@ -11,5 +11,6 @@ class Constants {
         const val paid = "paid"
         const val pending = "pending"
         const val draft = "draft"
+        val options = listOf(1, 7, 30)
     }
 }

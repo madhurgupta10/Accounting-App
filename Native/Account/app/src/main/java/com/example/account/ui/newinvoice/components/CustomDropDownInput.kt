@@ -4,12 +4,14 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.account.R
+import com.example.account.utils.Constants.Companion.options
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -20,10 +22,9 @@ fun CustomDropDownInput(
     value: Int,
     modifier: Modifier,
     toggleBottomBar: (value: Boolean) -> Unit,
+    onClick: (Int) -> Unit
 ) {
-    val options = listOf(1, 7, 30)
     var expanded by remember { mutableStateOf(false) }
-    var selectedOptionText by remember { mutableStateOf(options[options.indexOf(value)]) }
     val focusManager = LocalFocusManager.current
     val coroutineScope = rememberCoroutineScope()
     Column(
@@ -54,7 +55,7 @@ fun CustomDropDownInput(
             TextField(
                 modifier = Modifier.fillMaxWidth(),
                 readOnly = true,
-                value = "Next $selectedOptionText Days",
+                value = "Next $value Days",
                 shape = RoundedCornerShape(4.dp),
                 textStyle = MaterialTheme.typography.h3,
                 onValueChange = {},
@@ -84,7 +85,7 @@ fun CustomDropDownInput(
                     DropdownMenuItem(
                         modifier = Modifier.fillMaxWidth(),
                         onClick = {
-                            selectedOptionText = selectionOption
+                            onClick(selectionOption)
                             expanded = false
                         }
                     ) {

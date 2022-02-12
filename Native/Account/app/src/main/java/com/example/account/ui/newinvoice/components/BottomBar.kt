@@ -12,10 +12,12 @@ import com.example.account.model.Invoice
 import com.example.account.model.enums.InvoiceStatus
 import com.example.account.utils.getStatus
 import com.example.account.viewmodel.InvoiceDetailViewModel
+import com.example.account.viewmodel.NewInvoiceViewModel
 
 @Composable
 fun BottomBar(
-    activity: Activity
+    activity: Activity,
+    newInvoiceViewModel: NewInvoiceViewModel
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -27,7 +29,7 @@ fun BottomBar(
             .padding(20.dp)
     ) {
         DiscardButton(activity)
-        SaveAsDraftButton(activity)
-        SaveAndSendButton(activity)
+        SaveAsDraftButton(activity, newInvoiceViewModel)
+        SaveAndSendButton(activity, newInvoiceViewModel)
     }
 }
